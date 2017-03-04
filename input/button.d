@@ -42,3 +42,75 @@ int getFloorNo(){ return elev_get_floor_sensor_signal();}
 int getButton(elev_button_type_t button, int floor){ return elev_get_button_signal(button, floor);}
 int getStop(){ return elev_get_stop_signal();}
 int getObstruction(){return elev_get_obstruction_signal();}
+
+
+struct MultiState{
+    int function() foo;
+    int state;
+    string msg;
+    //int (*foo)();
+    this(  int function ()foo){
+        this.foo = foo;
+    }
+    this (string msg){
+        this.msg = msg;
+    }
+    void update(int current){
+        if ( current != state){
+            writeln(msg,current);
+        }
+        state = current;
+    }
+}
+
+
+
+
+struct Elevetor {
+    MultiState floor;
+    static void init(){
+        elev_init();
+    }
+    static stop(){
+        elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
+    }
+    static up(){
+        elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
+    }
+    static down(){
+        elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//fuck
