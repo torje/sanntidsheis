@@ -11,9 +11,6 @@ struct MultiState{
     this(  int function ()foo){
         this.foo = foo;
     }
-    this (string msg){
-        this.msg = msg;
-    }
     void update(){
         int current = foo();
         if ( current != state){
@@ -30,8 +27,8 @@ struct MultiState2ary{
     Tuple!(int,int) events;
     this(int function(int,int) foo, int arg0, int arg1){
         this.foo = foo;
-        this.arg0;
-        this.arg1;
+        this.arg0 = arg0;
+        this.arg1 = arg1;
     }
     void update(){
         int current = foo(arg0, arg1);
