@@ -101,6 +101,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 
 void handleButtons(){
     foreach( ref button ; buttonsIn){
+        writeln("snafu");
         button.update();
         foreach(ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
