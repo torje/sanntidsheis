@@ -44,8 +44,8 @@ void floor_seek(){
     floor = MultiState(&getFloorNo);
     floor.update();
     up();
-    while(floor.state != -1){Thread.sleep(dur!"msecs"(32));floor.update();}
-    stop();
+    //while(floor.state != -1){Thread.sleep(dur!"msecs"(32));floor.update();}
+    //stop();
 }
 void spawn(elev_type et){
     elev_init(et);
