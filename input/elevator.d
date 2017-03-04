@@ -67,14 +67,14 @@ void spawn(elev_type et){
     stop();
     floor_seek();
     while(true){
-        floors.update();
+        floor.update();
     }
 }
 void handleFloors(){
-    if (floors.events.length> 1){
+    if (floor.events.length> 1){
         writeln("emergency, you suck at coding");
     }
-    foreach(event; floors.events){
+    foreach(event; floor.events){
         if (event[0] >= 0&& event[1] == -1){
             if (dir == UP){
                 esTtPos = event[0]+0.5;
