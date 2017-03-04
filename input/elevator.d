@@ -65,8 +65,8 @@ void floor_seek(){
     stop();
     //writeln("stop moving");
 }
-void spawn(elev_type et, shared NonBlockingChannel!(Order) ch){
-    this.ch = ch;
+void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
+    ch = ch1;
     elev_init(et);
     stop();
     floor_seek();
