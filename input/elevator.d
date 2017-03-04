@@ -81,13 +81,16 @@ void handleFloors(){
             }else if (dir == Direction.DOWN){
                 estPos = event[0]-0.5;
             }else if ( dir == Direction.STILL    ){
+                writeln("fuck");
                 defined = false;
             }else{
+                writeln("fuck");
                 defined = false;
             }
         }else if (event[0] ==-1 && event[1]>= 0 && event[1]< N_FLOORS){
             estPos= event[1];
         }else{
+            writeln("fuck");
             defined = false;
         }
     }
