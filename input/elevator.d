@@ -92,6 +92,7 @@ void handleFloors(){
             estPos= event[1];
         }else{
             writeln("Mishandled data");
+            writeln(event);
             defined = false;
         }
     }
