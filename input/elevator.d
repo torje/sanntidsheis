@@ -53,6 +53,10 @@ enum Direction{
 struct Order{
     int floor;
     int direction;
+    this(int floor, int direction){
+        this.floor = floor;
+        this.direction = direction;
+    }
 }
 import std.stdio;
 
@@ -92,9 +96,32 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
         handleButtons();
     }
 }
-void handleButtons(){
 
-    elev_button_type_t cbutton;
+void handleButtons(){
+    foreach( ref button ; buttonsIn){
+        button.update();
+        foreach(i,ref event; button.events){
+            if (  event[0] == -1 &&  event[1] ==1 ) {
+                ch.insert( Order(i,Direction.DontCare));
+            }
+        }
+    }
+    foreach( ref button ; buttonsUp){
+        button.update();
+        foreach(i,ref event; button.events){
+            if (  event[0] == -1 &&  event[1] ==1 ) {
+                ch.insert( Order(i,Direction.UP));
+            }
+        }
+    }
+    foreach( ref button ; buttonsDown){
+        button.update();
+        foreach(i,ref event; button.events){
+            if (  event[0] == -1 &&  event[1] ==1 ) {
+                ch.insert( Order(i,Direction.DOWN));
+            }
+        }
+    }
 
 }
 void handleFloors(){
