@@ -58,7 +58,7 @@ void floor_seek(){
     //writeln("start moving");
     while(floor.state == -1){Thread.sleep(dur!"msecs"(32));floor.update();}
     defined = true;
-    estPos = floors.state;
+    estPos = floor.state;
     stop();
     //writeln("stop moving");
 }
@@ -76,11 +76,11 @@ void handleFloors(){
     }
     foreach(event; floor.events){
         if (event[0] >= 0&& event[1] == -1){
-            if (dir == UP){
+            if (dir == Direction.UP){
                 esTtPos = event[0]+0.5;
-            }else if (dir ==DOWN){
+            }else if (dir == Direction.DOWN){
                 esTtPos = event[0]-0.5;
-            }else if ( dir == STOP ){
+            }else if ( dir == Direction.STOP ){
                 defined = false;
             }else{
                 defined = false;
