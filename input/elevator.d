@@ -5,7 +5,7 @@ import channels;
 struct MultiState{
     int function() foo;
     int state;
-    string msg;
+    //string msg;
     Tuple!(int,int)[] events;
     //int (*foo)();
     this(  int function ()foo){
@@ -21,13 +21,26 @@ struct MultiState{
         }
         state = current;
     }
-    void update(int current){
+}
+
+struct MultiState2ary{
+    int state;
+    int function(int,int) foo;
+    int arg0, arg1;
+    Tuple!(int,int) events;
+    this(int function(int,int) foo, int arg0, int arg1){
+        this.foo = foo;
+        this.arg0;
+        this.arg1;
+    }
+    void update(){
+        int current = foo(arg0, arg1);
         if ( current != state){
-            //writeln(msg,current);
-            events~=tuple(state,current);
+            events~=tuple(state,current);;
         }
         state = current;
     }
+
 }
 
 enum OrderDirection{
@@ -53,6 +66,12 @@ MultiState floor;
 Direction dir;
 shared NonBlockingChannel!(Order) ch;
 double estPos;
+MultiState2ary[] buttonsUp;
+MultiState2ary[] buttonsIn;
+MultiState2ary[] buttonsDown;
+
+
+
 void floor_seek(){
     floor = MultiState(&getFloorNo);
     floor.update();
@@ -73,7 +92,13 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
     while(true){
         floor.update();
         handleFloors();
+        handleButtons();
     }
+}
+void handleButtons(){
+
+    elev_button_type_t cbutton;
+
 }
 void handleFloors(){
     if (floor.events.length> 1){
@@ -104,6 +129,18 @@ void handleFloors(){
 }
 void init(elev_type et){
     elev_init(et);
+    buttonsIn = new MultiState2ary[N_FLOORS];
+    buttonsUp = new MultiState2ary[N_FLOORS];
+    buttonsDown = new MultiState2ary[N_FLOORS];
+    foreach( i,ref button; buttonsIn ){
+        button = MultiState2ary(&getButton,elev_button_type_t.COMMAND,i );
+    }
+    foreach ( ref button ; buttonsUp){
+        button = MultiState2ary(&getButton,elev_button_type_t.CALL_UP,i );
+    }
+    foreach( ref button ; buttonsDown){
+        button = MultiState2ary(&getButton,elev_button_type_t.CALL_DOWN,i );
+    }
 }
 void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);

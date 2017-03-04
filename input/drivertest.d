@@ -4,6 +4,7 @@ static import elevator;
 import button, channels;
 import std.concurrency;
 
+
 void main(){
     shared NonBlockingChannel!(elevator.Order) elevatorChan = new NonBlockingChannel!(elevator.Order);
     elevator.init(elev_type.ET_Comedi);
@@ -18,7 +19,12 @@ void main(){
     //elevator.stop();
     auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi, elevatorChan);
     //elevator.spawn( elev_type.ET_Comedi , elevatorChan);
+
     while( true){
+        elevator.Order order;
+        while ( ch.extract(order) ){
+            writeln(order);
+        }
     }
 
 }
