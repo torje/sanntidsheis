@@ -7,7 +7,7 @@ import std.concurrency;
 
 void main(){
     shared NonBlockingChannel!(elevator.Order) elevatorChan = new NonBlockingChannel!(elevator.Order);
-    elevator.init(elev_type.ET_Comedi);
+    //elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     /+elevator.up();
     Thread.sleep(dur!"msecs"(250));
@@ -22,7 +22,7 @@ void main(){
 
     while( true){
         elevator.Order order;
-        //writeln("snafu");   
+        //writeln("snafu");
         while ( elevatorChan.extract(order) ){
             writeln(order);
         }
