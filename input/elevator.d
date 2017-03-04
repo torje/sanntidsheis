@@ -102,9 +102,9 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 void handleButtons(){
     foreach( ref button ; buttonsIn){
         button.update();
-        foreach(int i,ref event; button.events){
+        foreach(ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
-                ch.insert( Order(i,OrderDirection.DontCare));
+                ch.insert( Order(2,OrderDirection.DontCare));
             }else{
                 writeln("you suck");
             }
