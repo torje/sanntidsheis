@@ -21,5 +21,5 @@ void main(){
             floors.update( elev_get_floor_sensor_signal());
         }
     }+/
-    Thread.join(tid);
+    tid.join();
 }
