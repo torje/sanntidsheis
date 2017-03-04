@@ -101,8 +101,6 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 
 void handleButtons(){
 
-    writeln("buttonsIn");
-
     foreach( ref button ; buttonsIn){
         button.update();
         foreach(ref event; button.events){
@@ -113,8 +111,7 @@ void handleButtons(){
             }
         }
     }
-    writeln("buttonsUp");
-foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
+    foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
@@ -124,7 +121,6 @@ foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
             }
         }
     }
-    writeln("buttonsDown");
     foreach( ref button ; buttonsDown[1..N_FLOORS]){
         //button.update();
         foreach(int i,ref event; button.events){
