@@ -95,6 +95,7 @@ void handleFloors(){
             defined = false;
         }
     }
+    floor.events = [];
 }
 void init(elev_type et){
     elev_init(et);
