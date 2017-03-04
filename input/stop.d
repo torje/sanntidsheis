@@ -9,6 +9,6 @@ void main(){
     elevator.init(elev_type.ET_Comedi);
 
     elevator.stop();
-    auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
-    Thread.sleep(dur!"seconds"(2));
+
+    Thread.sleep(dur!"msecs"(20));
 }
