@@ -51,7 +51,7 @@ import std.stdio;
 bool defined = false;
 MultiState floor;
 Direction dir;
-NonBlockingChannel!(Order) ch;
+shared NonBlockingChannel!(Order) ch;
 double estPos;
 void floor_seek(){
     floor = MultiState(&getFloorNo);
