@@ -117,7 +117,7 @@ void handleButtons(){
         foreach(int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.UP));
-            }else if ()event[0] == 1 &&  event[1] ==0 ) {
+            }else if (event[0] == 1 &&  event[1] ==0 ) {
             }else{
                 writeln("you suck");
             }
