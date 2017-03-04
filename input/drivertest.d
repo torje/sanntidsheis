@@ -2,6 +2,7 @@ import core.time, core.thread;
 import std.stdio;
 static import elevator;
 import button;
+import std.concurrency;
 
 void main(){
 
@@ -14,7 +15,7 @@ void main(){
     elevator.down();
     Thread.sleep(dur!"msecs"(250));
     elevator.stop();
-
+    spawn(&elevator.spawn,elev_type.ET_Comedi);
     /+while( true){
         foreach(i; 0..N_FLOORS){
             floors.update( elev_get_floor_sensor_signal());
