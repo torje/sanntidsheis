@@ -16,7 +16,7 @@ struct MultiState{
     void update(){
         int current = foo();
         if ( current != state){
-            events~=current;
+            events~=tuple(state,current);;
         }
         state = current;
     }
