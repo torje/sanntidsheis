@@ -117,7 +117,7 @@ void handleButtons(){
 foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
         button.update();
         foreach(int i,ref event; button.events){
-            if (  event[0] == -1 &&  event[1] ==1 ) {
+            if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.UP));
             }else{
                 writeln("you suck");
@@ -128,7 +128,7 @@ foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
     foreach( ref button ; buttonsDown[1..N_FLOORS]){
         button.update();
         foreach(int i,ref event; button.events){
-            if (  event[0] == -1 &&  event[1] ==1 ) {
+            if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DOWN));
             }else{
                 writeln("you suck");
