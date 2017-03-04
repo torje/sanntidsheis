@@ -90,10 +90,6 @@ void floor_seek(){
 void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
     ch = ch1;
     init(et);
-
-    writeln("buttonsIn.length : ", buttonsIn.length);
-    writeln("buttonsUp.length : ", buttonsUp.length);
-    writeln("buttonsDown.length : ", buttonsDown.length);
     stop();
     floor_seek();
     while(true){
@@ -106,7 +102,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 void handleButtons(){
 
     foreach( ref button ; buttonsIn){
-        writeln("snafuIN");
+
         button.update();
         foreach(ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -117,7 +113,6 @@ void handleButtons(){
         }
     }
     foreach( ref button ; buttonsUp){
-        writeln("snafuUP");
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -128,7 +123,6 @@ void handleButtons(){
         }
     }
     foreach( ref button ; buttonsDown){
-        writeln("snafuDown");
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -138,7 +132,6 @@ void handleButtons(){
             }
         }
     }
-
 }
 void handleFloors(){
     if (floor.events.length> 1){
@@ -172,9 +165,6 @@ void init(elev_type et){
     buttonsIn = new MultiState2ary[N_FLOORS];
     buttonsUp = new MultiState2ary[N_FLOORS];
     buttonsDown = new MultiState2ary[N_FLOORS];
-    writeln("buttonsIn.length : ", buttonsIn.length);
-    writeln("buttonsUp.length : ", buttonsUp.length);
-    writeln("buttonsDown.length : ", buttonsDown.length);
     foreach( i,ref button; buttonsIn ){
         buttonsIn[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,cast(int)i );
     }
@@ -184,10 +174,6 @@ void init(elev_type et){
     foreach(i, ref button ; buttonsDown){
         buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_DOWN,cast(int)i );
     }
-
-    writeln("buttonsIn.length : ", buttonsIn.length);
-    writeln("buttonsUp.length : ", buttonsUp.length);
-    writeln("buttonsDown.length : ", buttonsDown.length);
 }
 void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
