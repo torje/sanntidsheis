@@ -90,6 +90,10 @@ void floor_seek(){
 void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
     ch = ch1;
     elev_init(et);
+
+    writeln("buttonsIn.length : ", buttonsIn.length);
+    writeln("buttonsUp.length : ", buttonsUp.length);
+    writeln("buttonsDown.length : ", buttonsDown.length);
     stop();
     floor_seek();
     while(true){
