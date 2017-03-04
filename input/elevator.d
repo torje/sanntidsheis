@@ -4,6 +4,7 @@ struct MultiState{
     int function() foo;
     int state;
     string msg;
+    int[] events;
     //int (*foo)();
     this(  int function ()foo){
         this.foo = foo;
@@ -14,6 +15,7 @@ struct MultiState{
     void update(int current){
         if ( current != state){
             //writeln(msg,current);
+            events~=current;
         }
         state = current;
     }
