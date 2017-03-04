@@ -68,6 +68,7 @@ void spawn(elev_type et){
     floor_seek();
     while(true){
         floor.update();
+        handleFloors();
     }
 }
 void handleFloors(){
