@@ -1,6 +1,6 @@
 import core.time, core.thread;
 import std.stdio;
-
+import button;
 struct MultiState{
     int function() foo;
     int state;
