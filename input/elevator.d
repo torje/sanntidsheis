@@ -104,7 +104,7 @@ void handleButtons(){
     foreach( ref button ; buttonsIn){
         button.update();
         foreach(ref event; button.events){
-            if (  event[0] == -1 &&  event[1] ==1 ) {
+            if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(2,OrderDirection.DontCare));
             }else if (event[0] == 1 &&  event[1] ==0 ) {
             }else{
