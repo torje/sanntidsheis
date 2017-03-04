@@ -79,7 +79,7 @@ void floor_seek(){
     floor = MultiState(&getFloorNo);
     floor.update();
     floor.events = [];
-    up();
+    down();
     //writeln("start moving");
     while(floor.state == -1){Thread.sleep(dur!"msecs"(32));floor.update();}
     defined = true;
@@ -100,8 +100,8 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 }
 
 void handleButtons(){
-    writeln("snafu");
     foreach( ref button ; buttonsIn){
+        writeln("snafuIN");
         button.update();
         foreach(ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -112,6 +112,7 @@ void handleButtons(){
         }
     }
     foreach( ref button ; buttonsUp){
+        writeln("snafuUP");
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -122,6 +123,7 @@ void handleButtons(){
         }
     }
     foreach( ref button ; buttonsDown){
+        writeln("snafuDown");
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
