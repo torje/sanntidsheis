@@ -124,7 +124,7 @@ foreach( ref button ; buttonsUp){
             }
         }
     }
-    writeln("buttonsUp");
+    writeln("buttonsDown");
     foreach( ref button ; buttonsDown){
         button.update();
         foreach(int i,ref event; button.events){
