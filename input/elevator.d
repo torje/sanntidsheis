@@ -110,6 +110,7 @@ void handleButtons(){
                 writeln("you suck");
             }
         }
+        button.events = [];
     }
     foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
         button.update();
@@ -120,6 +121,7 @@ void handleButtons(){
                 writeln("you suck");
             }
         }
+        button.events = [];
     }
     foreach( ref button ; buttonsDown[1..N_FLOORS]){
         //button.update();
@@ -130,6 +132,7 @@ void handleButtons(){
                 writeln("you suck");
             }
         }
+        button.events = [];
     }
 }
 void handleFloors(){
