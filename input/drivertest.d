@@ -22,5 +22,5 @@ void main(){
             floors.update( elev_get_floor_sensor_signal());
         }
     }+/
-    Thread.sleep(dur!"seconds"(2));
+    //Thread.sleep(dur!"seconds"(2));
 }

@@ -51,7 +51,7 @@ void spawn(elev_type et){
     floor_seek();
 }
 void init(elev_type et){
-    elev_init( et);
+    elev_init(et);
 }
 void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
