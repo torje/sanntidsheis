@@ -32,5 +32,5 @@ static up(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
 }
 static down(){
-    elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
+    elev_set_motor_direction(elev_motor_direction_t.DIRN_DOWN);
 }
