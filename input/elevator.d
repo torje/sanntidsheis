@@ -1,6 +1,7 @@
 import button;
 import core.thread;
 import std.typecons;
+import channels;
 struct MultiState{
     int function() foo;
     int state;
