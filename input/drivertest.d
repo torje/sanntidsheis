@@ -5,12 +5,12 @@ static import elevator;
 
 void main(){
 
-    Elevator.init(elev_type.ET_Comedi);
+    elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
-    Elevator.up();
-    Elevator.stop();
-    Elevator.down();
-    Elevator.stop();
+    elevator.up();
+    elevator.stop();
+    elevator.down();
+    elevator.stop();
 
     /+while( true){
         foreach(i; 0..N_FLOORS){
