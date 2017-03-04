@@ -1,11 +1,11 @@
 import core.time, core.thread;
 import std.stdio;
 static import elevator;
-
+import button;
 
 void main(){
 
-    elevator.init(elevator.elev_type.ET_Comedi);
+    elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     elevator.up();
     elevator.stop();
