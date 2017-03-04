@@ -1,4 +1,5 @@
 import button;
+import core.thread;
 
 struct MultiState{
     int function() foo;
@@ -12,6 +13,13 @@ struct MultiState{
     this (string msg){
         this.msg = msg;
     }
+    void update(){
+        int current = foo();
+        if ( current != state){
+            events~=current;
+        }
+        state = current;
+    }
     void update(int current){
         if ( current != state){
             //writeln(msg,current);
@@ -21,7 +29,26 @@ struct MultiState{
     }
 }
 
+enum OrderDirection{
+    DontCare,DOWN,UP
+}
+
+struct Order{
+    int floor;
+    int direction;
+}
+
+bool defined = false;
 MultiState floor;
+void floor_seek(){
+    up();
+    floor.update();
+    while(floor.state != -1){Thread.sleep(dur!"msecs"(32));}
+}
+void spawn(elev_type et){
+    elev_init(et);
+    floor_seek();
+}
 void init(elev_type et){
     elev_init( et);
 }
