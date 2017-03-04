@@ -77,9 +77,9 @@ void handleFloors(){
     foreach(event; floor.events){
         if (event[0] >= 0&& event[1] == -1){
             if (dir == Direction.UP){
-                esTtPos = event[0]+0.5;
+                estPos = event[0]+0.5;
             }else if (dir == Direction.DOWN){
-                esTtPos = event[0]-0.5;
+                estPos = event[0]-0.5;
             }else if ( dir == Direction.STILL    ){
                 defined = false;
             }else{
