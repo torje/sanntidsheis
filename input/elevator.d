@@ -100,7 +100,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 void handleButtons(){
     foreach( ref button ; buttonsIn){
         button.update();
-        foreach(i,ref event; button.events){
+        foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DontCare));
             }
@@ -108,7 +108,7 @@ void handleButtons(){
     }
     foreach( ref button ; buttonsUp){
         button.update();
-        foreach(i,ref event; button.events){
+        foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.UP));
             }
@@ -116,7 +116,7 @@ void handleButtons(){
     }
     foreach( ref button ; buttonsDown){
         button.update();
-        foreach(i,ref event; button.events){
+        foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DOWN));
             }
