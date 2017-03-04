@@ -114,7 +114,7 @@ void handleButtons(){
         }
     }
     writeln("buttonsUp");
-foreach( ref button ; buttonsUp){
+foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
@@ -125,7 +125,7 @@ foreach( ref button ; buttonsUp){
         }
     }
     writeln("buttonsDown");
-    foreach( ref button ; buttonsDown){
+    foreach( ref button ; buttonsDown[1..N_FLOORS]){
         button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
