@@ -98,6 +98,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 }
 
 void handleButtons(){
+    writeln("buttons");
     foreach( ref button ; buttonsIn){
         button.update();
         foreach(int i,ref event; button.events){
