@@ -37,7 +37,7 @@ struct Order{
     int floor;
     int direction;
 }
-
+import std.stdio;
 bool defined = false;
 MultiState floor;
 void floor_seek(){
