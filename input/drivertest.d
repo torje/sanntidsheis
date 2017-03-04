@@ -20,7 +20,6 @@ struct MultiState{
     }
 }
 
-
 void main(){
 
     elev_init(elev_type.ET_Comedi);
