@@ -16,8 +16,8 @@ void main(){
     Thread.sleep(dur!"msecs"(250));+/
     //elevator.stop();
     //elevator.stop();
-    //auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
-    elevator.spawn( elev_type.ET_Comedi );
+    auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
+    //elevator.spawn( elev_type.ET_Comedi );
     /+while( true){
         foreach(i; 0..N_FLOORS){
             floors.update( elev_get_floor_sensor_signal());
