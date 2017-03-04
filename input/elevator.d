@@ -102,7 +102,7 @@ void handleButtons(){
         button.update();
         foreach(i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
-                ch.insert( Order(i,Direction.DontCare));
+                ch.insert( Order(i,OrderDirection.DontCare));
             }
         }
     }
@@ -110,7 +110,7 @@ void handleButtons(){
         button.update();
         foreach(i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
-                ch.insert( Order(i,Direction.UP));
+                ch.insert( Order(i,OrderDirection.UP));
             }
         }
     }
@@ -118,7 +118,7 @@ void handleButtons(){
         button.update();
         foreach(i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
-                ch.insert( Order(i,Direction.DOWN));
+                ch.insert( Order(i,OrderDirection.DOWN));
             }
         }
     }
