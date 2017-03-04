@@ -39,7 +39,7 @@ int elev_get_obstruction_signal();
 
 }
 int getFloorNo(){ return elev_get_floor_sensor_signal();}
-int getButton(int button, int floor){ return elev_get_button_signal(button, floor);}
+int getButton(elev_button_type_t button, int floor){ return elev_get_button_signal(button, floor);}
 int getStop(){ return elev_get_stop_signal();}
 int getObstruction(){return elev_get_obstruction_signal();}
 
