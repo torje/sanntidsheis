@@ -5,7 +5,7 @@ static import elevator;
 
 void main(){
 
-    elevator.init(elev_type.ET_Comedi);
+    elevator.init(elevator.elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     elevator.up();
     elevator.stop();
