@@ -126,7 +126,7 @@ foreach( ref button ; buttonsUp[0..N_FLOORS-1]){
     }
     writeln("buttonsDown");
     foreach( ref button ; buttonsDown[1..N_FLOORS]){
-        button.update();
+        //button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DOWN));
