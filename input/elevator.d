@@ -29,6 +29,7 @@ struct MultiState2ary{
         this.foo = foo;
         this.arg0 = arg0;
         this.arg1 = arg1;
+        writeln("init 2ary");
     }
     void update(){
         int current = foo(arg0, arg1);
