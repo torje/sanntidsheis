@@ -1,7 +1,7 @@
 import core.time, core.thread;
 import std.stdio;
 static import elevator;
-import button;
+import button, channels;
 import std.concurrency;
 
 void main(){
