@@ -52,8 +52,8 @@ enum Direction{
 
 struct Order{
     int floor;
-    int direction;
-    this(int floor, int direction){
+    OrderDirection direction;
+    this(int floor, OrderDirection direction){
         this.floor = floor;
         this.direction = direction;
     }
