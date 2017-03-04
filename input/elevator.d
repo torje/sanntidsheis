@@ -24,7 +24,7 @@ struct MultiState2ary{
     int state;
     int function(int,int) foo;
     int arg0, arg1;
-    Tuple!(int,int) events;
+    Tuple!(int,int)[] events;
     this(int function(int,int) foo, int arg0, int arg1){
         this.foo = foo;
         this.arg0 = arg0;
