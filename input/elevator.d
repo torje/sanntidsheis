@@ -100,6 +100,9 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 }
 
 void handleButtons(){
+    writeln("buttonsIn.length : " buttonsIn.length);
+    writeln("buttonsUp.length : " buttonsUp.length);
+    writeln("buttonsDown.length : " buttonsDown.length);
     foreach( ref button ; buttonsIn){
         writeln("snafuIN");
         button.update();
