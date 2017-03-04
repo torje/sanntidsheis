@@ -22,7 +22,7 @@ void main(){
 
     while( true){
         elevator.Order order;
-        writeln("snafu");
+        //writeln("snafu");   
         while ( elevatorChan.extract(order) ){
             writeln(order);
         }
