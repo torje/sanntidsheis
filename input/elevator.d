@@ -42,7 +42,7 @@ bool defined = false;
 MultiState floor;
 void floor_seek(){
     up();
-    floor = MultiState(getFloorNo);
+    floor = MultiState(&getFloorNo);
     floor.update();
     while(floor.state != -1){Thread.sleep(dur!"msecs"(32));floor.update();}
     stop();
