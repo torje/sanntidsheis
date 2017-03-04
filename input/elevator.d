@@ -171,13 +171,13 @@ void init(elev_type et){
     buttonsUp = new MultiState2ary[N_FLOORS];
     buttonsDown = new MultiState2ary[N_FLOORS];
     foreach( i,ref button; buttonsIn ){
-        button = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,cast(int)i );
+        buttonsIn[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,cast(int)i );
     }
     foreach (i, ref button ; buttonsUp){
-        button = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_UP,cast(int)i );
+        buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_UP,cast(int)i );
     }
     foreach(i, ref button ; buttonsDown){
-        button = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_DOWN,cast(int)i );
+        buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_DOWN,cast(int)i );
     }
 }
 void stop(){
