@@ -100,9 +100,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 }
 
 void handleButtons(){
-    writeln("buttonsIn.length : ", buttonsIn.length);
-    writeln("buttonsUp.length : ", buttonsUp.length);
-    writeln("buttonsDown.length : ", buttonsDown.length);
+
     foreach( ref button ; buttonsIn){
         writeln("snafuIN");
         button.update();
@@ -170,6 +168,9 @@ void init(elev_type et){
     buttonsIn = new MultiState2ary[N_FLOORS];
     buttonsUp = new MultiState2ary[N_FLOORS];
     buttonsDown = new MultiState2ary[N_FLOORS];
+    writeln("buttonsIn.length : ", buttonsIn.length);
+    writeln("buttonsUp.length : ", buttonsUp.length);
+    writeln("buttonsDown.length : ", buttonsDown.length);
     foreach( i,ref button; buttonsIn ){
         buttonsIn[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,cast(int)i );
     }
