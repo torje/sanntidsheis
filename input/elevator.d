@@ -13,7 +13,7 @@ struct MultiState{
     }
     void update(int current){
         if ( current != state){
-            writeln(msg,current);
+            //writeln(msg,current);
         }
         state = current;
     }
