@@ -33,6 +33,7 @@ struct MultiState2ary{
     void update(){
         int current = foo(arg0, arg1);
         if ( current != state){
+            writeln("added event");
             events~=tuple(state,current);;
         }
         state = current;
@@ -98,7 +99,6 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
 }
 
 void handleButtons(){
-    writeln("buttons");
     foreach( ref button ; buttonsIn){
         button.update();
         foreach(int i,ref event; button.events){
