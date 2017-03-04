@@ -22,15 +22,15 @@ struct MultiState{
 }
 
 MultiState floor;
-static void init(elev_type et){
+void init(elev_type et){
     elev_init( et);
 }
-static stop(){
+void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
 }
-static up(){
+void up(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
 }
-static down(){
+void down(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_DOWN);
 }
