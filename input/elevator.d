@@ -80,7 +80,7 @@ void handleFloors(){
                 esTtPos = event[0]+0.5;
             }else if (dir == Direction.DOWN){
                 esTtPos = event[0]-0.5;
-            }else if ( dir == Direction.STOP ){
+            }else if ( dir == Direction.STILL    ){
                 defined = false;
             }else{
                 defined = false;
@@ -97,13 +97,13 @@ void init(elev_type et){
 }
 void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
-    dir = STILL;
+    dir = Direction.STILL;
 }
 void up(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_UP);
-    dir = UP;
+    dir = Direction.UP;
 }
 void down(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_DOWN);
-    dir = DOWN;
+    dir = Direction.DOWN;
 }
