@@ -31,7 +31,7 @@ struct MultiState2ary{
         this.arg1 = arg1;
     }
     void update(){
-        writeln("updating");
+        //writeln("updating");
         int current = foo(arg0, arg1);
         if ( current != state){
             writeln("added event");
