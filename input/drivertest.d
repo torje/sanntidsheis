@@ -8,8 +8,11 @@ void main(){
     elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     elevator.up();
+    Thread.sleep(dur!"msec"(250));
     elevator.stop();
+    Thread.sleep(dur!"msec"(250));
     elevator.down();
+    Thread.sleep(dur!"msec"(250));
     elevator.stop();
 
     /+while( true){
