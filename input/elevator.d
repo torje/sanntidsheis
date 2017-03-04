@@ -46,6 +46,7 @@ void floor_seek(){
     up();
     writeln("start moving");
     while(floor.state != -1){Thread.sleep(dur!"msecs"(32));floor.update();}
+    stop;
     writeln("stop moving");
 }
 void spawn(elev_type et){
