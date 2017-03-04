@@ -15,7 +15,7 @@ void main(){
     elevator.down();
     Thread.sleep(dur!"msecs"(250));+/
     //elevator.stop();
-    elevator.stop();
+    //elevator.stop();
     //auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
     /+while( true){
         foreach(i; 0..N_FLOORS){
