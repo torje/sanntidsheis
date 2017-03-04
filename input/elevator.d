@@ -54,6 +54,7 @@ double estPos;
 void floor_seek(){
     floor = MultiState(&getFloorNo);
     floor.update();
+    floor.events = [];
     up();
     //writeln("start moving");
     while(floor.state == -1){Thread.sleep(dur!"msecs"(32));floor.update();}
@@ -91,7 +92,7 @@ void handleFloors(){
         }else if (event[0] ==-1 && event[1]>= 0 && event[1]< N_FLOORS){
             estPos= event[1];
         }else{
-            writeln("Mishandled data");
+            writeln("Mishandled data: floor jump");
             writeln(event);
             defined = false;
         }
