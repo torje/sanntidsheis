@@ -43,7 +43,7 @@ MultiState floor;
 void floor_seek(){
     up();
     floor.update();
-    while(floor.state != -1){Thread.sleep(dur!"msecs"(32));}
+    while(floor.state != -1){Thread.sleep(dur!"msecs"(32));floor.update();}
     stop();
 }
 void spawn(elev_type et){
