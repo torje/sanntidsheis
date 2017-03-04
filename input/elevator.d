@@ -104,6 +104,8 @@ void handleButtons(){
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DontCare));
+            }else{
+                writeln("you suck");
             }
         }
     }
@@ -112,6 +114,8 @@ void handleButtons(){
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.UP));
+            }else{
+                writeln("you suck");
             }
         }
     }
@@ -120,6 +124,8 @@ void handleButtons(){
         foreach(int i,ref event; button.events){
             if (  event[0] == -1 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DOWN));
+            }else{
+                writeln("you suck");
             }
         }
     }
