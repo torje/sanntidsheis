@@ -6,7 +6,7 @@ import std.concurrency;
 
 void main(){
 
-    elevator.init(elev_type.ET_Comedi);
+    //elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     /+elevator.up();
     Thread.sleep(dur!"msecs"(250));
@@ -16,11 +16,11 @@ void main(){
     Thread.sleep(dur!"msecs"(250));+/
     //elevator.stop();
     //elevator.stop();
-    //auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
+    auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
     /+while( true){
         foreach(i; 0..N_FLOORS){
             floors.update( elev_get_floor_sensor_signal());
         }
     }+/
-    //Thread.sleep(dur!"seconds"(2));
+    Thread.sleep(dur!"seconds"(2));
 }

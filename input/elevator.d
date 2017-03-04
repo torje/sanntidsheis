@@ -48,6 +48,7 @@ void floor_seek(){
 }
 void spawn(elev_type et){
     elev_init(et);
+    stop();
     floor_seek();
 }
 void init(elev_type et){
