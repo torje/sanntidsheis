@@ -5,7 +5,7 @@ import button, channels;
 import std.concurrency;
 
 void main(){
-
+    shared NonBlockingChannel!(elevator.Order) elevatorChan = new NonBlockingChannel!(elevator.Order);
     elevator.init(elev_type.ET_Comedi);
     //MultiState floors = MultiState("floor: ");
     /+elevator.up();
@@ -16,12 +16,9 @@ void main(){
     Thread.sleep(dur!"msecs"(250));+/
     //elevator.stop();
     //elevator.stop();
-    //auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi);
-    elevator.spawn( elev_type.ET_Comedi );
-    /+while( true){
-        foreach(i; 0..N_FLOORS){
-            floors.update( elev_get_floor_sensor_signal());
-        }
-    }+/
-    Thread.sleep(dur!"seconds"(2));
+    auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi, elevatorChan);
+    //elevator.spawn( elev_type.ET_Comedi , elevatorChan);
+    while( true){
+    }
+
 }

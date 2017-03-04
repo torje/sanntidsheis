@@ -51,6 +51,7 @@ import std.stdio;
 bool defined = false;
 MultiState floor;
 Direction dir;
+NonBlockingChannel!(Order) ch;
 double estPos;
 void floor_seek(){
     floor = MultiState(&getFloorNo);
@@ -64,7 +65,8 @@ void floor_seek(){
     stop();
     //writeln("stop moving");
 }
-void spawn(elev_type et){
+void spawn(elev_type et, shared NonBlockingChannel!(Order) ch){
+    this.ch = ch;
     elev_init(et);
     stop();
     floor_seek();
