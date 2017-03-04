@@ -184,6 +184,10 @@ void init(elev_type et){
     foreach(i, ref button ; buttonsDown){
         buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_DOWN,cast(int)i );
     }
+
+    writeln("buttonsIn.length : ", buttonsIn.length);
+    writeln("buttonsUp.length : ", buttonsUp.length);
+    writeln("buttonsDown.length : ", buttonsDown.length);
 }
 void stop(){
     elev_set_motor_direction(elev_motor_direction_t.DIRN_STOP);
