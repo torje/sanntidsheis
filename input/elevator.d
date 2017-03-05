@@ -1,46 +1,7 @@
 import button;
 import core.thread;
 import std.typecons;
-import channels;
-struct MultiState{
-    int function() foo;
-    int state;
-    //string msg;
-    Tuple!(int,int)[] events;
-    //int (*foo)();
-    this(  int function ()foo){
-        this.foo = foo;
-    }
-    void update(){
-        int current = foo();
-        if ( current != state){
-            events~=tuple(state,current);;
-        }
-        state = current;
-    }
-}
-
-struct MultiState2ary{
-    int state;
-    int function(int,int) foo;
-    int arg0, arg1;
-    Tuple!(int,int)[] events;
-    this(int function(int,int) foo, int arg0, int arg1){
-        this.foo = foo;
-        this.arg0 = arg0;
-        this.arg1 = arg1;
-    }
-    void update(){
-        //writeln("updating");
-        int current = foo(arg0, arg1);
-        if ( current != state){
-            //writeln("added event");
-            events~=tuple(state,current);;
-        }
-        state = current;
-    }
-
-}
+import channels, multistateeventgenerators;
 
 enum OrderDirection{
     DontCare,DOWN,UP
@@ -152,42 +113,6 @@ void handleButtons(){
     transferButtonEvents(buttonsIn);
     transferButtonEvents(buttonsUp);
     transferButtonEvents(buttonsDown);
-    /*foreach( ref button ; buttonsIn){
-        button.update();
-        foreach( int i,ref event; button.events){
-            if (  event[0] == 0 &&  event[1] ==1 ) {
-                ch.insert( Order(button.arg1,OrderDirection.DontCare));
-            }else if (event[0] == 1 &&  event[1] ==0 ) {
-            }else{
-                writeln("you suck");
-            }
-        }
-        button.events = [];
-    }
-    foreach( ref button ; buttonsUp){
-        button.update();
-        foreach(int i,ref event; button.events){
-            if (  event[0] == 0 && event[1] ==1 ) {
-                ch.insert( Order(button.arg1,OrderDirection.UP));
-            }else if (event[0] == 1 &&  event[1] ==0 ) {
-            }else{
-                writeln("you suck");
-            }
-        }
-        button.events = [];
-    }
-    foreach( ref button ; buttonsDown){
-        button.update();
-        foreach(int i,ref event; button.events){
-            if (  event[0] == 0 &&  event[1] ==1 ) {
-                ch.insert( Order(button.arg1,OrderDirection.DOWN));
-            }else if (event[0] == 1 &&  event[1] ==0 ) {
-            }else{
-                writeln("you suck");
-            }
-        }
-        button.events = [];
-    }*/
 }
 void handleFloors(){
     if (floor.events.length> 1){
