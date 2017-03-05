@@ -18,7 +18,7 @@ void main(){
     Thread.sleep(dur!"msecs"(250));+/
     //elevator.stop();
     //elevator.stop();
-    auto tid = spawn(&elevator.spawn,elev_type.ET_Comedi, fromElev, toElev);
+    auto tid = spawn(&elevator.spawn,elev_type.ET_Simulation, fromElev, toElev);
     //elevator.spawn( elev_type.ET_Comedi , elevatorChan);
 
     while( true){
