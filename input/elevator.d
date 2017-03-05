@@ -84,10 +84,12 @@ void floor_seek(){
     floor.events = [];
     down();
     //writeln("start moving");
-    while(floor.state == -1){Thread.sleep(dur!"msecs"(32));floor.update();}
-    defined = true;
-    estPos = floor.state;
-    stop();
+    if(!defined){;floor.update();}
+    else{
+        defined = true;
+        estPos = floor.state;
+        stop();
+    }
     //writeln("stop moving");
 }
 void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockingChannel!(Order) toElev){
@@ -95,12 +97,15 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockin
     inChannel = toElev;
     init(et);
     stop();
-    floor_seek();
     while(true){
-        floor.update();
-        handleFloors();
-        handleButtons();
-        executeOrders();
+        if ( defined ){
+            floor.update();
+            handleFloors();
+            handleButtons();
+            executeOrders();
+        }else{
+            floor_seek();
+        }
     }
 }
 
