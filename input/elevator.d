@@ -122,6 +122,10 @@ void executeOrders(){
         if ( goToFloor(currentOrder.floor)){
             currentOrder.active = false;
         }
+    }else{
+        if ( inChannel.extract(currentOrder)){
+            currentOrder.active = true;
+        }
     }
 }
 
