@@ -7,10 +7,10 @@ import  core.thread,
         std.stdio;
 
 
-import  peers,
-//import  networkd.peers,
-    //networkd.udp_bcast;
-    udp_bcast;
+//import  peers,
+import  networkd.peers,
+    networkd.udp_bcast;
+    //udp_bcast;
 
 
 
@@ -36,6 +36,9 @@ void main(){
                 writeln("Received peer list: ", a);
             }
         );
+        writeln(peer
+
+        )
     }
 }
 
