@@ -37,7 +37,7 @@ void main(){
             (PeerList a){
                 writeln("Received peer list: ", a);
             }
-        );
+        );  
     }
 }
 
