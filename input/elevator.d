@@ -128,9 +128,25 @@ void executeOrders(){
         }
     }
 }
-
+void transferButtonEvents( MultiState2ary buttonGroup){
+    foreach( ref button ; buttonGroup){
+        button.update();
+        foreach( int i,ref event; button.events){
+            if (  event[0] == 0 &&  event[1] ==1 ) {
+                ch.insert( Order(button.arg1,OrderDirection.DontCare));
+            }else if (event[0] == 1 &&  event[1] ==0 ) {
+            }else{
+                writeln("you suck");
+            }
+        }
+        button.events = [];
+    }
+}
 void handleButtons(){
-    foreach( ref button ; buttonsIn){
+    transferButtonEvents(buttonsIn);
+    transferButtonEvents(buttonsUp);
+    transferButtonEvents(buttonsDown);
+    /*foreach( ref button ; buttonsIn){
         button.update();
         foreach( int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
@@ -165,7 +181,7 @@ void handleButtons(){
             }
         }
         button.events = [];
-    }
+    }*/
 }
 void handleFloors(){
     if (floor.events.length> 1){
