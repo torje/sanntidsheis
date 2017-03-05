@@ -79,12 +79,10 @@ MultiState2ary[] buttonsDown;
 
 
 void floor_seek(){
-    floor = MultiState(&getFloorNo);
     floor.update();
     floor.events = [];
-
     //writeln("start moving");
-    if(!defined){
+    if( floor.state != -1){
         down();
         floor.update();}
     else{
@@ -99,6 +97,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockin
     inChannel = toElev;
     init(et);
     stop();
+    floor = MultiState(&getFloorNo);
     while(true){
         if ( defined ){
             floor.update();
