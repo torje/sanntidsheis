@@ -170,15 +170,15 @@ void init(elev_type et){
     buttonsIn = new MultiState2ary[N_FLOORS];
     buttonsUp = new MultiState2ary[N_FLOORS];
     buttonsDown = new MultiState2ary[N_FLOORS];
-    foreach( i,ref button; buttonsIn ){
-        buttonsIn[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,cast(int)i );
+    foreach( int i,ref button; buttonsIn ){
+        buttonsIn[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_COMMAND,i );
     }
-    foreach (i, ref button ; buttonsUp){
-        buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_UP,cast(int)i );
+    foreach (int i, ref button ; buttonsUp){
+        buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_UP,i );
     }
-    foreach(i, ref button ; buttonsDown){
+    foreach(int i, ref button ; buttonsDown){
         int buttonType = elev_button_type_t.BUTTON_CALL_DOWN;
-        buttonsUp[i] = MultiState2ary(&getButton,buttonType,cast(int)i );
+        buttonsUp[i] = MultiState2ary(&getButton,buttonType,i );
     }
 }
 void stop(){
