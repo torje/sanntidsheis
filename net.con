@@ -1,7 +1,7 @@
 net.con
 
 --net_peer_port                             20092
---net_peer_timeout                          350
+--net_peer_timeout                          2000
 --net_peer_interval                         100
 --net_peer_id                               default
 
