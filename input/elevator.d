@@ -126,7 +126,7 @@ void handleButtons(){
         button.events = [];
     }
     foreach( ref button ; buttonsDown){
-        button.update();
+        //button.update();
         foreach(int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DOWN));
@@ -178,7 +178,7 @@ void init(elev_type et){
     }
     foreach(int i, ref button ; buttonsDown){
         int buttonType = elev_button_type_t.BUTTON_CALL_DOWN;
-        buttonsUp[i] = MultiState2ary(&getButton,buttonType,i );
+        buttonsDown[i] = MultiState2ary(&getButton,buttonType,i );
     }
 }
 void stop(){
