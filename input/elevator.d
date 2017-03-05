@@ -103,7 +103,7 @@ void handleButtons(){
 
     foreach( ref button ; buttonsIn){
         button.update();
-        foreach( i,ref event; button.events){
+        foreach( int i,ref event; button.events){
             if (  event[0] == 0 &&  event[1] ==1 ) {
                 ch.insert( Order(i,OrderDirection.DontCare));
             }else if (event[0] == 1 &&  event[1] ==0 ) {
