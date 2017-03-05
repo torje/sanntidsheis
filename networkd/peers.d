@@ -11,10 +11,10 @@ import  core.thread,
 
 
 private __gshared ushort        port            = 16567;
-private __gshared int           timeout_ms      = 350;
-private __gshared Duration      timeout;        
+private __gshared int           timeout_ms      = 2000;
+private __gshared Duration      timeout;
 private __gshared int           interval_ms     = 100;
-private __gshared Duration      interval;       
+private __gshared Duration      interval;
 private __gshared string        id_str          = "default";
 private __gshared ubyte         _id;
 
@@ -45,12 +45,12 @@ Tid init(Tid receiver = thisTid){
             "net_peer_interval",    &interval_ms,
             "net_peer_id",          &id_str
         );
-        
-            
+
+
         timeout = timeout_ms.msecs;
         interval = interval_ms.msecs;
-        
-        if(id_str == "default"){ 
+
+        if(id_str == "default"){
             _id = new TcpSocket(new InternetAddress("google.com", 80))
                 .localAddress
                 .toAddrString
@@ -60,12 +60,12 @@ Tid init(Tid receiver = thisTid){
         } else {
             _id = id_str.to!ubyte;
         }
-        
+
     } catch(Exception e){
         writeln("Unable to load net_peer config:\n", e.msg);
     }
 
-    
+
     spawn(&rx, receiver);
     return spawn(&tx);
 }
@@ -85,7 +85,7 @@ private void tx(){
 
     bool txEnable = true;
     while(true){
-        receiveTimeout(interval, 
+        receiveTimeout(interval,
             (TxEnable t){
                 txEnable = t;
             }
