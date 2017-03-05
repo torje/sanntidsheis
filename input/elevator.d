@@ -34,7 +34,7 @@ struct MultiState2ary{
         //writeln("updating");
         int current = foo(arg0, arg1);
         if ( current != state){
-            writeln("added event");
+            //writeln("added event");
             events~=tuple(state,current);;
         }
         state = current;
