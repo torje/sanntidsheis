@@ -9,10 +9,6 @@ enum OrderDirection{
 enum Direction{
     UP, DOWN, STILL
 }
-
-
-
-
 struct Order{
     int floor;
     OrderDirection direction;
@@ -37,22 +33,6 @@ MultiState2ary[] buttonsUp;
 MultiState2ary[] buttonsIn;
 MultiState2ary[] buttonsDown;
 
-
-
-void floor_seek(){
-    floor.update();
-    floor.events = [];
-    //writeln("start moving");
-    if( floor.state == -1){
-        down();
-        floor.update();}
-    else{
-        defined = true;
-        estPos = floor.state;
-        stop();
-    }
-    //writeln("stop moving");
-}
 void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockingChannel!(Order) toElev){
     ch = ch1;
     inChannel = toElev;
@@ -71,6 +51,21 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockin
     }
 }
 
+// internal functions;
+void floor_seek(){
+    floor.update();
+    floor.events = [];
+    //writeln("start moving");
+    if( floor.state == -1){
+        down();
+        floor.update();}
+    else{
+        defined = true;
+        estPos = floor.state;
+        stop();
+    }
+    //writeln("stop moving");
+}
 bool goToFloor(int floor){
     if (0==estPos-floor){
         stop();
@@ -83,7 +78,6 @@ bool goToFloor(int floor){
         return false;
     }
 }
-
 void executeOrders(){
     if ( currentOrder.active ==true ){
         if ( goToFloor(currentOrder.floor)){
