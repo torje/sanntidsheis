@@ -22,11 +22,14 @@ import std.stdio;
 
 
 
+shared NonBlockingChannel!(Order) ch;
+shared NonBlockingChannel!(Order) inChannel;
+
+
+
 bool defined = false;
 MultiState floor;
 Direction dir;
-shared NonBlockingChannel!(Order) ch;
-shared NonBlockingChannel!(Order) inChannel;
 Order currentOrder;
 double estPos;
 MultiState2ary[] buttonsUp;

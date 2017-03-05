@@ -25,7 +25,9 @@ void main(){
 
 
     while(true){
-        receiveTimeout!(dur!"msecs"(20) )(
+        Duration timeout = dur!"msecs"(20);
+        receiveTimeout(timeout,
+        //receiveTimeout!(dur!"msecs"(20) )(
             (HelloMsg a){
                 writeln("Received HelloMsg: ", a);
             },
