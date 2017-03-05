@@ -120,7 +120,7 @@ bool goToFloor(int floor){
 void executeOrders(){
     if ( currentOrder.active ==true ){
         if ( goToFloor(currentOrder.floor)){
-            currentOrder.active ==false;
+            currentOrder.active = false;
         }
     }
 }
