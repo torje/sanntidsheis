@@ -36,6 +36,7 @@ void main(){
                 writeln("Received peer list: ", a);
             }
         );
+        writeln(id);
     }
 }
 
