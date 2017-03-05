@@ -10,8 +10,8 @@ enum elev_motor_direction_t:int{
 }
 enum elev_button_type_t:int{
     BUTTON_CALL_UP = 2,
-    BUTTON_CALL_DOWN = 2,
-    BUTTON_COMMAND = 2
+    BUTTON_CALL_DOWN = 0,
+    BUTTON_COMMAND = 1
 }
 
 enum elev_type:int{
