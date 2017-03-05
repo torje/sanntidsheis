@@ -128,7 +128,7 @@ void executeOrders(){
         }
     }
 }
-void transferButtonEvents( MultiState2ary buttonGroup){
+void transferButtonEvents( MultiState2ary[] buttonGroup){
     foreach( ref button ; buttonGroup){
         button.update();
         foreach( int i,ref event; button.events){
