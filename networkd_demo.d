@@ -7,8 +7,10 @@ import  core.thread,
         std.stdio;
 
 
-import  networkd.peers,
-        networkd.udp_bcast;
+import  peers,
+//import  networkd.peers,
+    //networkd.udp_bcast;
+    udp_bcast;
 
 
 

@@ -11,7 +11,7 @@ import  std.array,
         std.traits,
         std.typecons;
 
-import jsond.jsonx;
+import jsonx;
 
 
 private __gshared ushort        port            = 16568;
