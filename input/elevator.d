@@ -82,9 +82,11 @@ void floor_seek(){
     floor = MultiState(&getFloorNo);
     floor.update();
     floor.events = [];
-    down();
+
     //writeln("start moving");
-    if(!defined){;floor.update();}
+    if(!defined){
+        down();
+        floor.update();}
     else{
         defined = true;
         estPos = floor.state;
