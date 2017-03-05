@@ -55,6 +55,7 @@ enum Direction{
 struct Order{
     int floor;
     OrderDirection direction;
+    bool active = false;
     this(int floor, OrderDirection direction){
         this.floor = floor;
         this.direction = direction;
@@ -68,6 +69,8 @@ bool defined = false;
 MultiState floor;
 Direction dir;
 shared NonBlockingChannel!(Order) ch;
+shared NonBlockingChannel!(Order) inChannel;
+Order currentOrder;
 double estPos;
 MultiState2ary[] buttonsUp;
 MultiState2ary[] buttonsIn;
@@ -87,8 +90,9 @@ void floor_seek(){
     stop();
     //writeln("stop moving");
 }
-void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
+void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockingChannel!(Order) toElev){
     ch = ch1;
+    inChannel = toElev;
     init(et);
     stop();
     floor_seek();
@@ -96,6 +100,28 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1){
         floor.update();
         handleFloors();
         handleButtons();
+        executeOrders();
+    }
+}
+
+bool goToFloor(int floor){
+    if (0==estPos-floor){
+        stop();
+        return true;
+    }else if ( 0< estPos-floor ){
+        down();
+        return false;
+    }else{
+        up();
+        return false;
+    }
+}
+
+void executeOrders(){
+    if ( currentOrder.active ==true ){
+        if ( goToFloor(currentOrder.floor)){
+            currentOrder.active ==false;
+        }
     }
 }
 
