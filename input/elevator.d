@@ -82,7 +82,7 @@ void floor_seek(){
     floor.update();
     floor.events = [];
     //writeln("start moving");
-    if( floor.state != -1){
+    if( floor.state == -1){
         down();
         floor.update();}
     else{
