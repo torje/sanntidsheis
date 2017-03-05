@@ -130,7 +130,6 @@ void executeOrders(){
 }
 
 void handleButtons(){
-
     foreach( ref button ; buttonsIn){
         button.update();
         foreach( int i,ref event; button.events){

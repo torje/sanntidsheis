@@ -26,6 +26,9 @@ void main(){
         //writeln("snafu");
         while ( fromElev.extract(order) ){
             writeln(order);
+            if ( order.direction == elevator.OrderDirection.DontCare){
+                toElev.insert(order);
+            }
         }
     }
 
