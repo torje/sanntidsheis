@@ -177,7 +177,7 @@ void init(elev_type et){
         buttonsUp[i] = MultiState2ary(&getButton,elev_button_type_t.BUTTON_CALL_UP,cast(int)i );
     }
     foreach(i, ref button ; buttonsDown){
-        int buttonType = elev_button_type_t.BUTTON_CALL_DOWN
+        int buttonType = elev_button_type_t.BUTTON_CALL_DOWN;
         buttonsUp[i] = MultiState2ary(&getButton,buttonType,cast(int)i );
     }
 }
