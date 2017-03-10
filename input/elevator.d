@@ -25,8 +25,6 @@ import std.stdio;
 shared NonBlockingChannel!(Order) ch;
 shared NonBlockingChannel!(Order) inChannel;
 
-
-
 bool defined = false;
 MultiState floor;
 Direction dir;
