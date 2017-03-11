@@ -17,7 +17,7 @@ import  networkd.peers,
 
 
 void main(){
-    Tid     peerTx  = init;
+  Tid     peerTx  = init;
     ubyte   id      = id;
     Tid     bcast   = init!(HelloMsg, ArrayMsg)(id);
 

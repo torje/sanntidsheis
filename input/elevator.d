@@ -1,7 +1,7 @@
-import button;
+import input.button;
 import core.thread;
 import std.typecons;
-import channels, multistateeventgenerators;
+import threadcom.channels, input.multistateeventgenerators;
 
 enum OrderDirection{
     DontCare,DOWN,UP
@@ -49,6 +49,7 @@ void spawn(elev_type et, shared NonBlockingChannel!(Order) ch1,shared NonBlockin
         }else{
             floor_seek();
         }
+	Thread.sleep(dur!"msecs"(50));
     }
 }
 

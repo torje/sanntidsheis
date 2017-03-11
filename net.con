@@ -7,4 +7,4 @@ net.con
 
 --net_bcast_port                            21092
 --net_bcast_bufSize                         1024
---net_bcast_recvFromSelf                    1
+--net_bcast_recvFromSelf                    0
