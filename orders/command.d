@@ -158,9 +158,9 @@ void deleteOrders(NetworkOrder toBeRemoved){
 
 void main(){
     initCommand();
-    //Tid transmitThread = init();
-    Tid bcast = init!NetworkOrder(id);
+    Tid transmitThread = init();
     ubyte myId = id();
+    Tid bcast = init!NetworkOrder(id);
     spawn(&readOrders, bcast);
     Thread.sleep(dur!"seconds"(1) );
     auto timeout = dur!"msecs"(20);
