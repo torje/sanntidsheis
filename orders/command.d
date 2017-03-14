@@ -84,7 +84,7 @@ void readOrders(Tid bcast){
                 throw new Exception("done goofed");
             }
             auto oe = OrderExpression( Order(floor, direction, id), op) ;
-            bcast.send(oe );
+            ownerTid.send(oe );
         }catch(Throwable t){
             writeln("you write like a drunk: ", t);
         }
