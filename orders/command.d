@@ -123,7 +123,7 @@ void insertOrders(NetworkOrder nOrder, Tid bcast, ubyte id ){
         if ( unconfirmedOrders.canFind!(cmpOrderPlusConfirmationToNetworkOrder)(nOrder)){
             auto where = unconfirmedOrders.find!cmpOrderPlusConfirmationToNetworkOrder(nOrder) ;
             where[0].ids ~= nOrder.id;
-            where[0]ids ~= id;
+            where[0].ids ~= id;
             where[0].ids = where[0].ids.sort.uniq.array;
             auto conf = OrderConfirmation(nOrder.orderExpr, id);
             bcast.send(conf);
