@@ -226,6 +226,7 @@ void main(){
         (Order order){writeln(order);},
         (OrderExpression orderexpr){
             writeln(orderexpr);
+            appendUnconfirmed(orderexpr.order,id);
             auto nOrder = NetworkOrder(orderexpr,id);
             writeln(nOrder);
             bcast.send(nOrder);
