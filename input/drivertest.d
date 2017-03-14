@@ -1,7 +1,7 @@
 import core.time, core.thread;
 import std.stdio;
 import elevator = input.elevator;
-import input.button, channels;
+import input.elev_wrap, channels;
 import std.concurrency;
 
 
@@ -9,7 +9,7 @@ void main(){
     shared NonBlockingChannel!(elevator.Order) fromElev = new NonBlockingChannel!(elevator.Order);
     shared NonBlockingChannel!(elevator.Order) toElev = new NonBlockingChannel!(elevator.Order);
     auto tid = spawn(&elevator.spawn,elev_type.ET_Simulation, fromElev, toElev);
-    
+
     while( true){
         elevator.Order order;
         //writeln("snafu");

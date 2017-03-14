@@ -4,7 +4,7 @@ DFLAGS=
 elevatordriver:elevatordriver/elevatordriver.o
 elevatordriver/elevatordriver.o: elevatordriver/elevatordriver.d
 	$(DC) $(DFLAGS) -of$@$^
-networkd_demo: networkd_demo.o jsond/jsonx.o networkd/udp_bcast.o networkd/peers.o
+networkd_demo: networkd/networkd_demo.o jsond/jsonx.o networkd/udp_bcast.o networkd/peers.o
 	$(DC) $^ -of$@
 networkd_demo.o: networkd_demo.d
 	$(DC) -c $(DFLAGS)  $^ -of$@
@@ -15,14 +15,16 @@ networkd/udp_bcast.o:networkd/udp_bcast.d
 networkd/peers.o:networkd/peers.d
 	$(DC) -c $(DFLAGS)  $^ -of$@
 
-persistance/persistance.o : persistance/persistance.d
-	$(DC) $(DFLAGS) $^ -of$@
-persistDemo: persistance/persistDemo.d persistance/persistance.d
-	$(DC) $(DFLAGS) $^ -of$@
 
 %.o:%.d
 	$(DC) $(DFLAGS) -c $^ -of$@
-drivertest: input/drivertest.o input/multistateeventgenerators.o input/button.o input/elevator.o threadcom/channels.o input/elev.o input/io.o
+
+persistance/persistance.o : persistance/persistance.d
+	$(DC) $(DFLAGS) $^ -of$@
+persistDemo: persistance/persistDemo.o persistance/persist.o
+	$(DC) $(DFLAGS) $^ -of$@
+
+drivertest: input/drivertest.o input/multistateeventgenerators.o input/elev_wrap.o input/elevator.o threadcom/channels.o input/elev.o input/io.o
 	$(DC) -of$@ $^ -L-lcomedi
 command: orders/command.o networkd/udp_bcast.o networkd/peers.o jsond/jsonx.o
-	$(DC) -of$@ $^ 
+	$(DC) -of$@ $^
