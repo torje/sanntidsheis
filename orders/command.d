@@ -32,9 +32,9 @@ struct OrderPlusConfirmation{
     }
 }
 struct OrderConfirmation{
-    Order order;
+    OrderExpression order;
     ubyte id;
-    this(Order  order , ubyte id ){
+    this(OrderExpression  order , ubyte id ){
         this.order = order;
         this.id = id;
     }
@@ -94,7 +94,7 @@ void readOrders(Tid bcast){
 void retransmit(Tid bcast){
     synchronized(unconfirmedOrders_mutex){
         foreach(ref order; unconfirmedOrders){
-            bcast.send(OrderExpression(order.order, OrderOperation.Create) );
+            bcast.send( OrderExpression(order.order, OrderOperation.Create) );
         }
     }
 }
@@ -110,30 +110,36 @@ void moveOrders( PeerList pl){
 
 }
 
-void processNetworkOrder(NetworkOrder nOrder){
+void processNetworkOrder(NetworkOrder nOrder, Tid bcast, ubyte id ){
     if ( OrderOperation.Delete == nOrder.orderExpr.operation){
-        deleteOrders(nOrder);
+        deleteOrders(nOrder,bcast,id);
     }else if (OrderOperation.Create == nOrder.orderExpr.operation){
-        insertOrders(nOrder);
+        insertOrders(nOrder,bcast,id);
     }
 }
-void insertOrders(NetworkOrder nOrder){
+void insertOrders(NetworkOrder nOrder, Tid bcast, ubyte id ){
     synchronized( confirmedOrders_mutex){
         //if ( unconfirmedOrders.canFind!((a,b)=>a.order==b.orderExpr.order )(nOrder)){
         if ( unconfirmedOrders.canFind!(cmpOrderPlusConfirmationToNetworkOrder)(nOrder)){
             auto where = unconfirmedOrders.find!cmpOrderPlusConfirmationToNetworkOrder(nOrder) ;
             where[0].ids ~= nOrder.id;
             where[0].ids = where[0].ids.sort.uniq.array;
+            auto conf = OrderConfirmation(nOrder.orderExpr, id);
+            bcast.send(conf);
             // do not confirm anything from here
         }else if(  confirmedOrders.canFind!( ( a,b) => a.order == b )(nOrder.orderExpr.order)){
+            auto conf = OrderConfirmation(nOrder.orderExpr, id);
+            bcast.send(conf);
             // do not confirm anything from here
         }else{
             unconfirmedOrders ~= OrderPlusConfirmation( nOrder.orderExpr.order, nOrder.id ) ;
+            auto conf = OrderConfirmation(nOrder.orderExpr, id);
+            bcast.send(conf);
             // do not confirm anything from here
         }
     }
 }
-void deleteOrders(NetworkOrder toBeRemoved){
+void deleteOrders(NetworkOrder toBeRemoved, Tid bcast, ubyte id ){
     synchronized( confirmedOrders_mutex){
         synchronized( unconfirmedDeletions_mutex ){
             OrderPlusConfirmation[] toBeKept;
@@ -147,8 +153,12 @@ void deleteOrders(NetworkOrder toBeRemoved){
                 auto where = unconfirmedDeletions.find!( (a,b) => a.order == b.orderExpr.order )(toBeRemoved) ;
                 where[0].ids ~= toBeRemoved.id;
                 where[0].ids = where[0].ids.sort.uniq.array;
+                auto conf = OrderConfirmation(toBeRemoved.orderExpr, id);
+                bcast.send(conf);
             }else{
                 unconfirmedDeletions ~= OrderPlusConfirmation( toBeRemoved.orderExpr.order,toBeRemoved.id);
+                auto conf = OrderConfirmation(toBeRemoved.orderExpr, id);
+                bcast.send(conf);
             }
         }
     }
@@ -176,7 +186,7 @@ void main(){
             },
         (NetworkOrder norder){
             writeln("received from net",norder);
-            processNetworkOrder(norder);
+            processNetworkOrder(norder,bcast,id);
             writeln( "processed order: ");
             writeln("confirmed: ",confirmedOrders);
             writeln("unconfirmedOrders: ", unconfirmedOrders);
@@ -185,6 +195,9 @@ void main(){
         //&deleteOrders,
         (PeerList pl){
             writeln("Peerlist: ",pl);
+        },
+        (OrderConfirmation conf){
+            writeln(conf);
         },
         (Variant var){
             writeln("Torje, handle your shit");
