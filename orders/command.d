@@ -171,6 +171,7 @@ void main(){
         (OrderExpression orderexpr){
             writeln(orderexpr);
             auto nOrder = NetworkOrder(orderexpr,id);
+            writeln(nOrder);
             bcast.send(nOrder);
             },
         (NetworkOrder norder){
