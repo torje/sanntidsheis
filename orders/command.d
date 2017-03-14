@@ -122,7 +122,7 @@ void insertOrders(NetworkOrder nOrder, Tid bcast, ubyte id ){
         //if ( unconfirmedOrders.canFind!((a,b)=>a.order==b.orderExpr.order )(nOrder)){
         if ( unconfirmedOrders.canFind!(cmpOrderPlusConfirmationToNetworkOrder)(nOrder)){
             auto where = unconfirmedOrders.find!cmpOrderPlusConfirmationToNetworkOrder(nOrder) ;
-            where[0].ids ~= nOrder.id;
+            where[0].ids ~= nOrder.id ~ id;
             where[0].ids = where[0].ids.sort.uniq.array;
             auto conf = OrderConfirmation(nOrder.orderExpr, id);
             bcast.send(conf);
@@ -132,7 +132,9 @@ void insertOrders(NetworkOrder nOrder, Tid bcast, ubyte id ){
             bcast.send(conf);
             // do not confirm anything from here
         }else{
-            unconfirmedOrders ~= OrderPlusConfirmation( nOrder.orderExpr.order, nOrder.id ) ;
+            auto newOrder = OrderPlusConfirmation( nOrder.orderExpr.order, nOrder.id ) ;
+            newOrder.ids ~= id;
+            unconfirmedOrders ~= newOrder;
             auto conf = OrderConfirmation(nOrder.orderExpr, id);
             bcast.send(conf);
             // do not confirm anything from here
