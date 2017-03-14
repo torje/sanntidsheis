@@ -180,7 +180,7 @@ void main(){
         },
         //&deleteOrders,
         (PeerList pl){
-            writeln(pl);
+            writeln("Peerlist: ",pl);
         },
         (Variant var){
             writeln("Torje, handle your shit");
