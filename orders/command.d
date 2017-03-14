@@ -52,7 +52,7 @@ struct NetworkOrder{
 Mutex unconfirmedOrders_mutex;
 OrderPlusConfirmation[] unconfirmedOrders;
 Mutex confirmedOrders_mutex;
-Order[] confirmedOrders;
+OrderPlusConfirmation[] confirmedOrders;
 Mutex unconfirmedDeletions_mutex;
 OrderPlusConfirmation[] unconfirmedDeletions;
 
@@ -125,7 +125,7 @@ void insertOrders(NetworkOrder nOrder){
             where[0].ids ~= nOrder.id;
             where[0].ids = where[0].ids.sort.uniq.array;
             // do not confirm anything from here
-        }else if(  confirmedOrders.canFind(nOrder.orderExpr.order)    ){
+        }else if(  confirmedOrders.canFind!( ( a,b) => a.order == b )(nOrder.orderExpr.order)){
             // do not confirm anything from here
         }else{
             unconfirmedOrders ~= OrderPlusConfirmation( nOrder.orderExpr.order, nOrder.id ) ;
@@ -136,9 +136,9 @@ void insertOrders(NetworkOrder nOrder){
 void deleteOrders(NetworkOrder toBeRemoved){
     synchronized( confirmedOrders_mutex){
         synchronized( unconfirmedDeletions_mutex ){
-            Order[] toBeKept;
+            OrderPlusConfirmation[] toBeKept;
             foreach( order ; confirmedOrders){
-                if (order != toBeRemoved.orderExpr.order ){
+                if (order.order != toBeRemoved.orderExpr.order ){
                     toBeKept ~= order;
                 }
             }
