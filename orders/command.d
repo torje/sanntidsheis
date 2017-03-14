@@ -228,8 +228,14 @@ void main(){
         (PeerList pl){
             writeln("Peerlist: ",pl);
         },
-        //(OrderConfirmation conf){writeln(conf);},
-        &processConfirmation,
+        (OrderConfirmation conf){
+            writeln(conf);
+            processConfirmation(conf);
+            writeln( "processed order: ");
+            writeln("confirmed: ",confirmedOrders);
+            writeln("unconfirmedOrders: ", unconfirmedOrders);
+            writeln("unconfirmedDeletions: ", unconfirmedDeletions);
+        },
         (Variant var){
             writeln("Torje, handle your shit");
             writeln(var);
