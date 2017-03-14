@@ -72,6 +72,8 @@ void appendUnconfirmed(Order order, ubyte id){
         auto where = unconfirmedOrders.find!(orderAmongstUnconfirmed)(order) ;
         where[0].ids ~= id;
         where[0].ids = where[0].ids.sort.uniq.array;
+    }else{
+        unconfirmedOrders ~= OrderPlusConfirmation(order, id);
     }
 }
 
