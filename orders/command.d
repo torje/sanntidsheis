@@ -70,13 +70,12 @@ bool orderAmongstUnconfirmed( const OrderPlusConfirmation a ,const Order order){
 void appendUnconfirmed(Order order, ubyte id){
     if ( unconfirmedOrders.canFind!(orderAmongstUnconfirmed)(order)){
         auto where = unconfirmedOrders.find!(orderAmongstUnconfirmed)(order) ;
-        where[0].ids ~= nOrder.id;
         where[0].ids ~= id;
         where[0].ids = where[0].ids.sort.uniq.array;
-        auto conf = OrderConfirmation(nOrder.orderExpr, id);
-        bcast.send(conf);
-        // do not confirm anything from here
+    }
 }
+
+
 
 void readOrders(Tid bcast){
     import std.format;
