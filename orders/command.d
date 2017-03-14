@@ -168,7 +168,10 @@ void main(){
     while(true){
         receiveTimeout( timeout,
         (Order order){writeln(order);},
-        (OrderExpression orderexpr){writeln(orderexpr);},
+        (OrderExpression orderexpr){
+            //writeln(orderexpr);
+            bcast.send(orderexpr);
+            },
         &deleteOrders,
         (PeerList pl){
             writeln(pl);
