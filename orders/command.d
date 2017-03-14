@@ -175,8 +175,12 @@ void main(){
             bcast.send(nOrder);
             },
         (NetworkOrder norder){
-            writeln(norder);
+            writeln("received from net",norder);
             processNetworkOrder(norder);
+            writeln( "processed order: ");
+            writeln("confirmed: ",confirmedOrders);
+            writeln("unconfirmedOrders: ", unconfirmedOrders);
+            writeln("unconfirmedDeletions: ", unconfirmedDeletions);
         },
         //&deleteOrders,
         (PeerList pl){
