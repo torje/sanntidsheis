@@ -170,7 +170,7 @@ void main(){
     initCommand();
     Tid transmitThread = init();
     ubyte myId = id();
-    Tid bcast = init!NetworkOrder(id);
+    Tid bcast = init!(NetworkOrder,OrderConfirmation)(id);
     spawn(&readOrders, bcast);
     Thread.sleep(dur!"seconds"(1) );
     auto timeout = dur!"msecs"(20);
