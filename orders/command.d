@@ -111,9 +111,9 @@ void moveOrders( PeerList pl){
 }
 
 void processNetworkOrder(NetworkOrder nOrder){
-    if ( OrderExpression.operation.Delete == nOrder){
+    if ( OrderExpression.Delete == nOrder.order.operation){
         deleteOrders(nOrder);
-    }else if (OrderExpression.operation.Create == nOrder){
+    }else if (OrderExpression.Create == nOrder.order.operation){
         inserOrders(nOrder);
     }
 }
