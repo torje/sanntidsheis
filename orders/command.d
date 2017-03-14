@@ -159,8 +159,8 @@ void deleteOrders(NetworkOrder toBeRemoved){
 void main(){
     initCommand();
     //Tid transmitThread = init();
-    ubyte myId = id();
     Tid bcast = init!NetworkOrder(id);
+    ubyte myId = id();
     spawn(&readOrders, bcast);
     Thread.sleep(dur!"seconds"(1) );
     auto timeout = dur!"msecs"(20);
@@ -169,16 +169,20 @@ void main(){
         receiveTimeout( timeout,
         (Order order){writeln(order);},
         (OrderExpression orderexpr){
-            //writeln(orderexpr);
+            writeln(orderexpr);
             auto nOrder = NetworkOrder(orderexpr,id);
             bcast.send(nOrder);
             },
-        (NetworkOrder  norder){
+        (NetworkOrder norder){
             writeln(norder);
         },
         //&deleteOrders,
         (PeerList pl){
             writeln(pl);
+        },
+        (Variant var){
+            writeln("Torje, handle your shit");
+            writeln(var);
         }
 
         );
