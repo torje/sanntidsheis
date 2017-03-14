@@ -173,9 +173,9 @@ void main(){
             auto nOrder = NetworkOrder(orderexpr,id);
             bcast.send(nOrder);
             },
-            (NetworkOrder  norder){
-                writeln(norder);
-            }
+        (NetworkOrder  norder){
+            writeln(norder);
+        },
         //&deleteOrders,
         (PeerList pl){
             writeln(pl);
