@@ -107,13 +107,13 @@ bool cmpOrderPlusConfirmationToNetworkOrder(OrderPlusConfirmation opc, NetworkOr
 }
 
 void moveOrders( PeerList pl){
-    
+
 }
 
 void processNetworkOrder(NetworkOrder nOrder){
-    if ( OrderExpression.Delete == nOrder){
+    if ( OrderExpression.operation.Delete == nOrder){
         deleteOrders(nOrder);
-    }else if (OrderExpression.Create == nOrder){
+    }else if (OrderExpression.operation.Create == nOrder){
         inserOrders(nOrder);
     }
 }
