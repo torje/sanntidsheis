@@ -76,8 +76,9 @@ void appendUnconfirmed(Order order, ubyte id){
         unconfirmedOrders ~= OrderPlusConfirmation(order, id);
     }
 }
+void removeOrders(){
 
-
+}
 
 void readOrders(Tid bcast){
     import std.format;
