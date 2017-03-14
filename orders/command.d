@@ -122,7 +122,7 @@ void insertOrders(NetworkOrder nOrder){
         //if ( unconfirmedOrders.canFind!((a,b)=>a.order==b.orderExpr.order )(nOrder)){
         if ( unconfirmedOrders.canFind!(cmpOrderPlusConfirmationToNetworkOrder)(nOrder)){
             auto where = unconfirmedOrders.find!cmpOrderPlusConfirmationToNetworkOrder(nOrder) ;
-            where[0].ids ~= nOrder.orderExpr.order.id;
+            where[0].ids ~= nOrder.id;
             where[0].ids = where[0].ids.sort.uniq.array;
             // do not confirm anything from here
         }else if(  confirmedOrders.canFind(nOrder.orderExpr.order)    ){
