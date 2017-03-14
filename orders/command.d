@@ -32,10 +32,10 @@ struct OrderPlusConfirmation{
     }
 }
 struct OrderConfirmation{
-    OrderExpression order;
+    OrderExpression orderExpr;
     ubyte id;
-    this(OrderExpression  order , ubyte id ){
-        this.order = order;
+    this(OrderExpression  orderExpr , ubyte id ){
+        this.orderExpr = orderExpr;
         this.id = id;
     }
 }
@@ -165,6 +165,35 @@ void deleteOrders(NetworkOrder toBeRemoved, Tid bcast, ubyte id ){
 }
 
 
+void processConfirmation( OrderConfirmation conf  ){
+    if (conf.orderExpr.operation == OrderOperation.Create){
+        foreach( ref ord; unconfirmedOrders ){
+            if ( ord.order == conf.orderExpr.order){
+                ord.ids ~= conf.id;
+                ord.ids = ord.ids.sort.uniq.array;
+            }
+        }
+    }else if ( conf.orderExpr.operation == OrderOperation.Delete ) {
+        OrderPlusConfirmation[] newConfirmed;
+        foreach(index, ref ord; confirmedOrders ){
+            if ( ord.order == conf.orderExpr.order){
+                OrderPlusConfirmation ordC = ord;
+                unconfirmedDeletions ~=ord;
+            }else{
+                newConfirmed ~=ord;
+            }
+        }
+        confirmedOrders = newConfirmed;
+        foreach(ref ord; unconfirmedDeletions){
+            if ( ord.order == conf.orderExpr.order){
+                ord.ids ~= conf.id;
+                ord.ids = ord.ids.sort.uniq.array;
+            }
+        }
+    }
+}
+
+
 
 void main(){
     initCommand();
@@ -196,9 +225,8 @@ void main(){
         (PeerList pl){
             writeln("Peerlist: ",pl);
         },
-        (OrderConfirmation conf){
-            writeln(conf);
-        },
+        //(OrderConfirmation conf){writeln(conf);},
+        &processConfirmation,
         (Variant var){
             writeln("Torje, handle your shit");
             writeln(var);
