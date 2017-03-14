@@ -176,7 +176,7 @@ void main(){
             (NetworkOrder  norder){
                 writeln(norder);
             }
-        &deleteOrders,
+        //&deleteOrders,
         (PeerList pl){
             writeln(pl);
         }
