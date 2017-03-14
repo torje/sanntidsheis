@@ -170,8 +170,12 @@ void main(){
         (Order order){writeln(order);},
         (OrderExpression orderexpr){
             //writeln(orderexpr);
-            bcast.send(orderexpr);
+            auto nOrder = NetworkOrder(orderexpr,id);
+            bcast.send(nOrder);
             },
+            (NetworkOrder  norder){
+                writeln(norder);
+            }
         &deleteOrders,
         (PeerList pl){
             writeln(pl);
