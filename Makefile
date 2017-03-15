@@ -23,8 +23,11 @@ persistance/persistance.o : persistance/persistance.d
 	$(DC) $(DFLAGS) $^ -of$@
 persistDemo: persistance/persistDemo.o persistance/persist.o
 	$(DC) $(DFLAGS) $^ -of$@
-
-drivertest: input/drivertest.o input/multistateeventgenerators.o input/elev_wrap.o input/elevator.o threadcom/channels.o input/elev.o input/io.o
+schedDemo: scheduler/sched.o threadcom/channels.o input/elev_wrap.o input/elevator.o  input/multistateeventgenerators.o input/elev.o input/io.o orders/ordertypes.o orders/command.o networkd/udp_bcast.o networkd/peers.o jsond/jsonx.o
+	$(DC) $(DFLAGS) $^ -of$@ -L-lcomedi
+drivertest: input/drivertest.o input/multistateeventgenerators.o input/elev_wrap.o input/elevator.o threadcom/channels.o input/elev.o input/io.o orders/ordertypes.o
 	$(DC) -of$@ $^ -L-lcomedi
-command: orders/command.o networkd/udp_bcast.o networkd/peers.o jsond/jsonx.o
+commandDemo: orders/command.o orders/commandDemo.o networkd/udp_bcast.o networkd/peers.o jsond/jsonx.o
 	$(DC) -of$@ $^
+persistantElevator: scheduler/sched.o threadcom/channels.o input/elev_wrap.o input/elevator.o  input/multistateeventgenerators.o input/elev.o input/io.o orders/ordertypes.o orders/command.o networkd/udp_bcast.o networkd/peers.o jsond/jsonx.o persistance/persist.o persistance/persistantElevator.o
+	$(DC) -of$@ $^ -L-lcomedi

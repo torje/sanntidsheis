@@ -1,55 +1,11 @@
 import std.concurrency, std.stdio, std.string, std.algorithm,std.array;
 import core.thread, core.sync.mutex;
+import orders.ordertypes;
 import core.time :dur;
 
 import networkd.udp_bcast, networkd.peers;
 
-struct Update{
-    int dummy;
-}
-struct Order{
-    int floor;
-    int direction;
-    ubyte id;
-    this(int floor, int direction, ubyte id){
-        this.floor = floor;
-        this.direction = direction;
-        this.id = id;
-    }
-}
-enum OrderOperation {Delete,Create};
-struct OrderExpression{
-    Order order;
-    OrderOperation operation;
-    this(Order order, OrderOperation operation){
-        this.order = order;
-        this.operation = operation;
-    }
-}
-struct OrderPlusConfirmation{
-    Order order;
-    ubyte[] ids;
-    this(Order order, ubyte id){
-        ids = [id];
-        this.order = order;
-    }
-}
-struct OrderConfirmation{
-    OrderExpression orderExpr;
-    ubyte id;
-    this(OrderExpression  orderExpr , ubyte id ){
-        this.orderExpr = orderExpr;
-        this.id = id;
-    }
-}
-struct NetworkOrder{
-    OrderExpression orderExpr;
-    ubyte id;
-    this( OrderExpression orderExpr, ubyte id){
-        this.orderExpr = orderExpr;
-        this.id = id;
-    }
-}
+
 Mutex unconfirmedOrders_mutex;
 OrderPlusConfirmation[] unconfirmedOrders;
 Mutex confirmedOrders_mutex;
@@ -59,15 +15,9 @@ OrderPlusConfirmation[] unconfirmedDeletions;
 PeerList pl;
 
 void initCommand(){
-    synchronized(unconfirmedOrders_mutex){
-        synchronized(confirmedOrders_mutex){
-            synchronized(unconfirmedOrders_mutex){
-                unconfirmedOrders_mutex = new Mutex;
-                confirmedOrders_mutex = new Mutex;
-                unconfirmedDeletions_mutex = new Mutex;
-            }
-        }
-    }
+    unconfirmedOrders_mutex = new Mutex;
+    confirmedOrders_mutex = new Mutex;
+    unconfirmedDeletions_mutex = new Mutex;
 }
 bool orderAmongstUnconfirmed( const OrderPlusConfirmation a ,const Order order){
     return a.order == order;
@@ -77,8 +27,13 @@ void appendUnconfirmed(Order order, ubyte id){
     synchronized(unconfirmedOrders_mutex){
         synchronized(confirmedOrders_mutex){
             synchronized(unconfirmedOrders_mutex){
-                if ( unconfirmedOrders.canFind!(orderAmongstUnconfirmed)(order)){
+                if ( unconfirmedOrders.canFind!(orderAmongstUnconfirmed)(order)
+                ){
                     auto where = unconfirmedOrders.find!(orderAmongstUnconfirmed)(order) ;
+                    where[0].ids ~= id;
+                    where[0].ids = where[0].ids.sort.uniq.array;
+                }else if ( confirmedOrders.canFind!(orderAmongstUnconfirmed)(order) ){
+                    auto where = confirmedOrders.find!(orderAmongstUnconfirmed)(order) ;
                     where[0].ids ~= id;
                     where[0].ids = where[0].ids.sort.uniq.array;
                 }else{
@@ -95,16 +50,17 @@ void removeOrders(Order order, ubyte id){
     synchronized(unconfirmedOrders_mutex){
         synchronized(confirmedOrders_mutex){
             synchronized(unconfirmedOrders_mutex){
-
+                if ( confirmedOrders.canFind!orderAmongstUnconfirmed(order) ){
+                    confirmedOrders = confirmedOrders.remove!(a=> a.order == order);
+                    auto where =  unconfirmedDeletions.find!orderAmongstUnconfirmed(order);
+                    if ( where.length>0 ){
+                        where[0].ids ~= id;
+                    }else{
+                        unconfirmedDeletions ~= OrderPlusConfirmation( order, id );
+                    }
+                }
             }
         }
-    }
-    confirmedOrders = confirmedOrders.remove!(a=> a.order == order);
-    auto where =  unconfirmedDeletions.find!orderAmongstUnconfirmed(order);
-    if ( where.length>0 ){
-        where[0].ids ~= id;
-    }else{
-        unconfirmedDeletions ~= OrderPlusConfirmation( order, id );
     }
 }
 void readOrders(Tid bcast){
@@ -127,7 +83,7 @@ void readOrders(Tid bcast){
             }else{
                 throw new Exception("done goofed");
             }
-            auto oe = OrderExpression( Order(floor, direction, id), op) ;
+            auto oe = OrderExpression( Order(floor, cast(OrderDirection)direction, id), op) ;
             ownerTid.send(oe );
         }catch(Throwable t){
             //writeln("you write like a drunk: ", t);
@@ -137,10 +93,13 @@ void readOrders(Tid bcast){
         }
     }
 }
-void retransmit(Tid bcast){
+void retransmit(Tid bcast, PeerList pl){
+    ubyte[] ids = pl.peers.dup;
     synchronized(unconfirmedOrders_mutex){
         foreach(ref order; unconfirmedOrders){
-            bcast.send( OrderExpression(order.order, OrderOperation.Create) );
+            if (order.ids.sort != ids.sort){
+                bcast.send( OrderExpression(order.order, OrderOperation.Create) );
+            }
         }
     }
 }
@@ -254,96 +213,136 @@ void processConfirmation( OrderConfirmation conf  ){
     }
 }
 void pruneLists(PeerList pl){
-
     synchronized(unconfirmedOrders_mutex){
         synchronized(confirmedOrders_mutex){
             synchronized(unconfirmedOrders_mutex){
+                ubyte[] ids = pl.peers.dup.sort;
+                {
+                    OrderPlusConfirmation[] newUnconfirmed;
+                    OrderPlusConfirmation[] newConfirmed;
+                    foreach( ref order; unconfirmedOrders){
+                        if ( order.ids.sort == ids ){
+                            newConfirmed ~= order;
+                        }else{
+                            newUnconfirmed ~=order;
+                        }
+                    }
+                    confirmedOrders ~= newConfirmed;
+                    unconfirmedOrders = newUnconfirmed;
+                }
 
-            }
-        }
-    }
-    ubyte[] ids = pl.peers.dup.sort;
-    {
-        OrderPlusConfirmation[] newUnconfirmed;
-        OrderPlusConfirmation[] newConfirmed;
-        foreach( ref order; unconfirmedOrders){
-            if ( order.ids.sort == ids ){
-                newConfirmed ~= order;
-            }else{
-                newUnconfirmed ~=order;
-            }
-        }
-        confirmedOrders ~= newConfirmed;
-        unconfirmedOrders = newUnconfirmed;
-    }
 
-    {
-        OrderPlusConfirmation[] newUnconfirmedDeletes;
-        foreach( ref order; unconfirmedDeletions){
-            if ( order.ids.sort == ids){
-            }else{
-                newUnconfirmedDeletes ~= order;
+                {
+                    OrderPlusConfirmation[] newUnconfirmedDeletes;
+                    foreach( ref order; unconfirmedDeletions){
+                        if ( order.ids.sort == ids){
+                        }else{
+                            newUnconfirmedDeletes ~= order;
+                        }
+                    }
+                    unconfirmedDeletions = newUnconfirmedDeletes;
+                }
             }
         }
-        unconfirmedDeletions = newUnconfirmedDeletes;
     }
 }
 
+void removeConfirmations(ubyte id){
+    synchronized(unconfirmedOrders_mutex){
+        synchronized(confirmedOrders_mutex){
+            synchronized(unconfirmedOrders_mutex){
+                foreach(ref order;unconfirmedOrders){
+                    order.ids = order.ids.filter!(a=>a!=id).array;
+                }
+                foreach(ref order;confirmedOrders){
+                    order.ids = order.ids.filter!(a=>a!=id).array;
+                }
 
-void main(){
+            }
+        }
+    }
+}
+
+immutable(Order)[] getRemainingOrders(){
+    synchronized(confirmedOrders_mutex){
+        auto confirmed = confirmedOrders.map!(a=>a.order).array;
+        auto unconfirmed = confirmedOrders.map!(a=>a.order).array;
+        auto all = confirmed~unconfirmed;
+        return all.idup;
+    }
+}
+immutable(ubyte)[] getPeers(){
+    return pl.peers.idup;
+}
+
+void command_spawn(){
     initCommand();
     Tid transmitThread = init();
     ubyte myId = id();
     Tid bcast = init!(NetworkOrder,OrderConfirmation)(id);
-    spawn(&readOrders, bcast);
-    Thread.sleep(dur!"seconds"(1) );
     auto timeout = dur!"msecs"(20);
 
     while(true){
         receiveTimeout( timeout,
         (Order order){writeln(order);},
         (OrderExpression orderexpr){
-            writeln(orderexpr);
+            //writeln(orderexpr);
             if ( OrderOperation.Create == orderexpr.operation ){
                 appendUnconfirmed(orderexpr.order,id);
             }else{
                 removeOrders( orderexpr.order,id );
             }
             auto nOrder = NetworkOrder(orderexpr,id);
-            writeln(nOrder);
+            //writeln(nOrder);
             bcast.send(nOrder);
             },
-            (NetworkOrder norder){
-                writeln("received from net",norder);
-                processNetworkOrder(norder,bcast,id);
-                writeln( "processed order: ");
-                writeln("confirmed: ",confirmedOrders);
-                writeln("unconfirmedOrders: ", unconfirmedOrders);
-                writeln("unconfirmedDeletions: ", unconfirmedDeletions);
-                },
-                //&deleteOrders,
-                (PeerList pl1){
-                    writeln("Peerlist: ",pl1);
-                    pl = pl1;
-                    },
-                    (Update update){
-                        writeln("confirmed: ",confirmedOrders);
-                        writeln("unconfirmedOrders: ", unconfirmedOrders);
-                        writeln("unconfirmedDeletions: ", unconfirmedDeletions);
-                        },
-                        (OrderConfirmation conf){
-                            writeln(conf);
-                            processConfirmation(conf);
-                            writeln( "processed order: ");
-                            writeln("confirmed: ",confirmedOrders);
-                            writeln("unconfirmedOrders: ", unconfirmedOrders);
-                            writeln("unconfirmedDeletions: ", unconfirmedDeletions);
-                            },
-                            (Variant var){
-                                writeln("Torje, handle your shit");
-                                writeln(var);
-                            }
-                            );
-                            pruneLists(pl);
-                        }
-                    }
+        (NetworkOrder norder){
+            writeln("received from net",norder);
+            processNetworkOrder(norder,bcast,id);
+            writeln( "processed order: ");
+            writeln("confirmed: ",confirmedOrders);
+            writeln("unconfirmedOrders: ", unconfirmedOrders);
+            writeln("unconfirmedDeletions: ", unconfirmedDeletions);
+        },
+        //&deleteOrders,
+        (PeerList pl1){
+            //writeln("Peerlist: ",pl1);
+            pl = pl1;
+        },
+        (Update update){
+            writeln("confirmed: ",confirmedOrders);
+            writeln("unconfirmedOrders: ", unconfirmedOrders);
+            writeln("unconfirmedDeletions: ", unconfirmedDeletions);
+        },
+        (NetworkResendAll client){
+            removeConfirmations(client.id);
+        },
+        (ResendAll client){
+            unconfirmedOrders = [];
+            confirmedOrders = [];
+            unconfirmedDeletions =[];
+        },
+        (RetrieveOrders ret){
+            auto ans = getRemainingOrders();
+            ownerTid.send( ans );
+        },
+        (RetrieveId dummy){ ownerTid.send(id);},
+        (RetrievePeers dummy){
+            ownerTid.send(getPeers());
+        },
+        (OrderConfirmation conf){
+            writeln(conf);
+            processConfirmation(conf);
+            //writeln( "processed order: ");
+            //writeln("confirmed: ",confirmedOrders);
+            //writeln("unconfirmedOrders: ", unconfirmedOrders);
+            //writeln("unconfirmedDeletions: ", unconfirmedDeletions);
+        },
+        (Variant var){
+            writeln("Unhandled message");
+            writeln(var);
+        });
+        retransmit(bcast, pl);
+        pruneLists(pl);
+    }
+}

@@ -1,5 +1,5 @@
-import core.stdc.signal;
-import std.stdio, std.socket, std.algorithm, std.process,core.thread;
+import core.stdc.signal,core.thread;
+import std.stdio, std.socket, std.algorithm, std.process, std.concurrency;
 enum Role {Master,Slave}
 
 void persist(string programName , Role role){
@@ -16,11 +16,11 @@ void persist(string programName , Role role){
       auto lastReceived = MonoTime.currTime;
       while ( true ){
 	ubyte[] data = new ubyte[](20);
-	writeln("slaveloop");
+	//writeln("slaveloop");
 	long received  = masterCom.receive(data);
 	if ( received > 0 ){
 	  lastReceived = MonoTime.currTime();
-	  writeln("msg received: " , data[0..received]);
+	  //writeln("msg received: " , data[0..received]);
 	  //writeln("receivedData: ", masterCom.getErrorText);
 	}else if (received == Socket.ERROR){
 	  //writeln("socket error");
@@ -46,6 +46,7 @@ void persist(string programName , Role role){
     writeln(t);
     Thread.sleep(dur!"seconds"(10));
   }
+  ownerTid.send("takeover!");
   version( OSX ){
     auto cmd =["/usr/bin/osascript", "-e","tell app \"iTerm2\" \n create window with default profile command \"" ~programName~      "\" \nend tell"];
   }
@@ -62,7 +63,7 @@ void persist(string programName , Role role){
       TcpSocket tcpSocket;
 
       while(true){
-	writeln("masterloop");
+	//writeln("masterloop");
 	if ( MasterState.Init == masterState ){
 	  try {
 	    tcpSocket = new TcpSocket();
@@ -75,12 +76,12 @@ void persist(string programName , Role role){
 	    tcpSocket.close();
 	    Thread.sleep(dur!"msecs"(100));
 	  }
-		  
+
 	}else{
 
 	  ubyte[] data= new ubyte[](10);
 	  long sent = tcpSocket.send(data);
-	  writeln("sent data: ", sent);
+	  //writeln("sent data: ", sent);
 	  Thread.sleep(dur!"msecs"(100));
 	  if (1>sent){
 	    pipeProcess(cmd);

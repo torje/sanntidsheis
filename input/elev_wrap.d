@@ -19,6 +19,8 @@ enum elev_type:int{
     ET_Simulation
 }
 
+
+
 extern(C){
     void elev_init(elev_type e);
 
@@ -33,7 +35,23 @@ extern(C){
     int elev_get_stop_signal();
     int elev_get_obstruction_signal();
 }
+
+/+struct Order{
+    int floor;
+    OrderDirection direction;
+    bool active = false;
+    this(int floor, OrderDirection direction){
+        this.floor = floor;
+        this.direction = direction;
+    }
+}+/
 int getFloorNo(){ return elev_get_floor_sensor_signal();}
 int getButton(int button, int floor){ return elev_get_button_signal(cast(elev_button_type_t)button, floor);}
 int getStop(){ return elev_get_stop_signal();}
 int getObstruction(){return elev_get_obstruction_signal();}
+void openDoor(){elev_set_door_open_lamp(1);}
+void closeDoor(){elev_set_door_open_lamp(0);}
+void setFloorIndicator(int floor){ elev_set_floor_indicator(floor);}
+void setButtonLamp(elev_button_type_t button, int floor, int value){
+    elev_set_button_lamp(button, floor, value);
+}
